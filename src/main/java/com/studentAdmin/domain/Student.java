@@ -16,5 +16,4 @@ public class Student {
     Long studentId;
     @TableId("student_name")
     String studentName;
-
 }

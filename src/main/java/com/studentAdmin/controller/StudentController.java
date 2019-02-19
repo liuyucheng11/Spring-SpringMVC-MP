@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StudentController {
     @Autowired
     StudentMapper studentMapper;
+
     @RequestMapping("/insertStudent.do")
     public void insertStudent(){
         Student a = new Student();
