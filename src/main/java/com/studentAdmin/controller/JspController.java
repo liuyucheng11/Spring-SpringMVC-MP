@@ -1,11 +1,14 @@
 package com.studentAdmin.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author:liu.yucheng
@@ -28,7 +31,17 @@ public class JspController {
         return mv;
     }
     @RequestMapping("/SecondPage.do")
-    public String getSecondPage(){
+    public String getSecondPage(HttpServletRequest request, Mod mod){
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i <6 ; i++) {
+            stringList.add("aaa"+i);
+        }
+        List<Integer> integerList = new ArrayList<>();
+        for (int i = 0; i <6 ; i++) {
+            integerList.add(i);
+        }
+        request.setAttribute("stringList",stringList);
+        request.setAttribute("intList",integerList);
         return secondPage;
     }
     @RequestMapping("/thirdPage.do")

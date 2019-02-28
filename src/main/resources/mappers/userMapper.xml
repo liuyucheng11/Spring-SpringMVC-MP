@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.articleshare.webproject.dao.userMapper">
-    <resultMap id="User" type="com.studentAdmin.domain.User">
-        <id column="user_id" jdbcType="INTEGER" property="userId"/>
-        <id column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <id column="user_age" jdbcType="INTEGER" property="userAge"/>
-        <id column="user_address" jdbcType="VARCHAR" property="userAddress"/>
-        <id column="user_password" jdbcType="VARCHAR" property="userPassword"/>
-        <id column="user_occupation" jdbcType="VARCHAR" property="userOccupation"/>
-        <id column="sex" jdbcType="INTEGER" property="sex"/>
-        <id column="register_date" jdbcType="DATE" property="registerDate"/>
-    </resultMap>
+<mapper namespace="com.studentAdmin.dao.mapper.UserMapper">
+    <sql id="User" >
+          user_id as userId,
+          user_name as userName,
+          user_password as userPassword,
+          sex as sex,
+          user_occupation as userOccupation,
+          register_date as registerDate,
+          user_address as userAddress,
+          user_age as userAge
+
+    </sql>
+    <select id="doUserLogin" resultType="com.studentAdmin.domain.User">
+        select <include refid="User"/>
+        from user where user.user_name = #{userName}
+    </select>
     <!--<resultMap id="ArticleScore" type="com.articleshare.webproject.domain.article.ArticleScore">
         <id column="evaluateId" jdbcType="INTEGER" property="evaluateId"/>
         <id column="userId" jdbcType="INTEGER" property="userId"/>

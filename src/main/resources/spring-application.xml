@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="system.webUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <!--<bean id="system.webUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
                 <prop key="/login.login">
@@ -11,7 +11,7 @@
                 </prop>
             </props>
         </property>
-    </bean>
+    </bean>-->
 
     <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
 

@@ -29,6 +29,8 @@ public class Article {
     @TableField("publish_date")
     private java.sql.Date publishDate;
 
+
+
     private String userName;
 
 
@@ -94,5 +96,11 @@ public class Article {
     public void setPublishDate(java.sql.Date publishDate) {
         this.publishDate = publishDate;
     }
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

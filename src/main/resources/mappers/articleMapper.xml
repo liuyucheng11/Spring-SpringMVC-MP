@@ -3,11 +3,12 @@
 <mapper namespace="com.studentAdmin.dao.mapper.ArticleMapper">
     <sql id="Base_Article_Information">
         article.articleid as articleId,
-        article.article_name as articleTitle,
+        article.article_name as articleName,
         article.userId as userId,
         article.homeUrl as  homeUrl,
         article.publish_date as publishDate,
-        article.article_desc as articleDesc
+        article.article_desc as articleDesc,
+        article.article_type as articleType
     </sql>
 
     <insert id="publishArticle" parameterType="com.studentAdmin.domain.Article">
@@ -29,6 +30,33 @@
         where
         article.article_name like "%"#{articleTitle}"%"
     </select>
+    <select id="qryScoreMap" parameterType="Long" resultType="com.studentAdmin.domain.Dto.ScoreDto">
+
+SELECT article_score.score as score ,count( * ) AS count FROM article_score WHERE article_score.articleId = #{articleId} GROUP BY score
+
+
+    </select>
+    <select id="searchArticleById" resultType="com.studentAdmin.domain.VOs.ArticleVO" parameterType="Long">
+        SELECT
+        <include refid="Base_Article_Information"/>
+        , user.user_name as userName from article
+        left join user on user.user_id = article.userId
+        where article.articleId = #{articleId}
+    </select>
+    <select id="qryArticleComments" parameterType="Long" resultType="com.studentAdmin.domain.VOs.ArticleScoreVO">
+            SELECT  article_score.evaluate_id as evaluateId,
+                    article_score.userId as userId,
+                    article_score.score as score,
+                    article_score.create_date as createDate,
+                    article_score.like_number as likeNumber,
+                    article_score.comment as comment,
+                    user.user_name as userName
+                    from article_score
+                    left join user on user.user_id = article_score.userId
+                    where
+                        article_score.articleId = #{articleId}
+    </select>
+
     <!--<select id="qryArticle" parameterType="java.util.Map"
             resultType="com.articleshare.webproject.domain.article.Article">
         SELECT

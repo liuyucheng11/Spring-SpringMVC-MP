@@ -22,5 +22,6 @@ public class StudentController {
         a.setStudentName("a");
         studentMapper.insert(a);
 
+
     }
 }
