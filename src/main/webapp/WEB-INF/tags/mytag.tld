@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+    <tlib-version>1.0</tlib-version>
+    <short-name>mytag</short-name>
+    <uri></uri>
+    <!-- Invoke 'Generate' action to add tags or functions -->
+    <tag>
+        <name>hello</name>
+        <tag-class>com.jspTags.myTags</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>listForEach</name>
+        <tag-class>com.jspTags.ListTags</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>list</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+             <type>java.lang.Object</type>
+        </attribute>
+    </tag>
+</taglib>
