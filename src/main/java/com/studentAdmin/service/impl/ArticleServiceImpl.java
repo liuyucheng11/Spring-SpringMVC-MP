@@ -1,13 +1,22 @@
 package com.studentAdmin.service.impl;
 
+import com.common.Result;
 import com.studentAdmin.dao.mapper.ArticleMapper;
+import com.studentAdmin.domain.Article;
 import com.studentAdmin.domain.Dto.ScoreDto;
+import com.studentAdmin.domain.User;
 import com.studentAdmin.domain.VOs.ArticleScoreVO;
 import com.studentAdmin.domain.VOs.ArticleVO;
+import com.studentAdmin.domain.common.Common;
+import com.studentAdmin.service.ArticleService;
+import com.studentAdmin.util.SessionUtil;
+import com.studentAdmin.util.UrlGenerationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
+import java.util.Date;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +28,9 @@ import java.util.Map;
  * @version:1.0
  */
 @Service("ArticleService")
-public class ArticleServiceImpl {
+public class ArticleServiceImpl implements ArticleService {
+    final String catalog = "d:\\Article_recommend_catalog\\";
+
     @Autowired
     ArticleMapper articleMapper;
     final int[] base = {1, 2, 3, 4, 5};
@@ -48,7 +59,7 @@ public class ArticleServiceImpl {
         double avg = 0;
         long totalSum = 0;
         for (Integer key : scoreMap.keySet()) {
-            totalSum += scoreMap.get(key)*key;
+            totalSum += scoreMap.get(key) * key;
             total += scoreMap.get(key);
         }
         //判断scoreMap是否包含1~5区间，没有的话设为0
@@ -64,7 +75,7 @@ public class ArticleServiceImpl {
                 Double percent = scoreMap.get(key) / (double) total;
                 percent = Double.parseDouble(decimalFormat.format(percent));
                 scoreStatistics.put(key, percent);
-                avg = Double.parseDouble(decimalFormat.format(totalSum/(double)total));
+                avg = Double.parseDouble(decimalFormat.format(totalSum / (double) total));
             }
         } else {
             for (int i = 0; i < base.length; i++) {
@@ -87,6 +98,46 @@ public class ArticleServiceImpl {
     public List<ArticleScoreVO> qryArticleComments(Long articleId) {
         List<ArticleScoreVO> list = articleMapper.qryArticleComments(articleId);
         return list;
+    }
+
+    /**
+     * 发表文章
+     *
+     * @param article
+     */
+    @Override
+    public Result publishArticle(Article article, String content) {
+        User user = (User) SessionUtil.getSessionAttribute("user");
+        if (user == null) {
+            //获取用户信息失败错误
+            return Result.error(Common.getCode_1(), Common.getMsg_1());
+        }
+        String homeUrl = UrlGenerationUtil.generateUrl(catalog, user.getUserId());
+        try {
+            File file = new File(homeUrl);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            PrintStream printStream = new PrintStream(new FileOutputStream(file));
+            printStream.print(content);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return Result.error(Common.getCode_2(), Common.getMsg_2());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Result.error(Common.getCode_2(), Common.getMsg_2());
+        }
+        article.setHomeUrl(homeUrl);
+        article.setUserId(user.getUserId());
+        article.setPublishDate(new Date());
+        try {
+            articleMapper.insert(article);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(Common.getCode_2(), Common.getMsg_2());
+        }
+        return Result.ok();
     }
 
 

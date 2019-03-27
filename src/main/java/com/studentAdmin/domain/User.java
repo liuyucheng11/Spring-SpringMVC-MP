@@ -17,7 +17,7 @@ public class User {
   @TableField("user_password")
   private String userPassword;
   @TableField("user_occupation")
-  private String userOccupation;
+  private String occupation;
   @TableField("register_date")
   private java.sql.Timestamp registerDate;
   @TableField("user_address")
@@ -62,13 +62,6 @@ public class User {
   }
 
 
-  public String getUserOccupation() {
-    return userOccupation;
-  }
-
-  public void setUserOccupation(String userOccupation) {
-    this.userOccupation = userOccupation;
-  }
 
 
   public java.sql.Timestamp getRegisterDate() {

@@ -20,19 +20,25 @@ public class Article {
     @TableField("homeUrl")
     private String homeUrl;
 
-    @TableField("articleType")
+    @TableField("article_type")
     private long articleType;
 
     @TableField("article_desc")
     private String articleDesc;
 
     @TableField("publish_date")
-    private java.sql.Date publishDate;
+    private java.util.Date publishDate;
 
 
 
     private String userName;
 
+    public Article(String articleName, long articleType, String articleDesc) {
+        this.articleName = articleName;
+        this.articleType = articleType;
+        this.articleDesc = articleDesc;
+    }
+    public Article(){}
 
 
     public long getArticleId() {
@@ -89,11 +95,11 @@ public class Article {
     }
 
 
-    public java.sql.Date getPublishDate() {
+    public java.util.Date getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(java.sql.Date publishDate) {
+    public void setPublishDate(java.util.Date publishDate) {
         this.publishDate = publishDate;
     }
     public String getUserName() {

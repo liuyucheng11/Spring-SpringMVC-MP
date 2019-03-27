@@ -14,4 +14,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     public User doUserLogin(String userName);
 
+    public User findUserByName(String userName);
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.studentAdmin.dao.mapper.UserMapper">
-    <sql id="User" >
+    <sql id="User">
           user_id as userId,
           user_name as userName,
           user_password as userPassword,
@@ -13,8 +13,12 @@
 
     </sql>
     <select id="doUserLogin" resultType="com.studentAdmin.domain.User">
-        select <include refid="User"/>
+        select
+        <include refid="User"/>
         from user where user.user_name = #{userName}
+    </select>
+    <select id="findUserByName" resultType="com.studentAdmin.domain.User">
+         select <include refid="User"/> from user where user.user_name = #{userName}
     </select>
     <!--<resultMap id="ArticleScore" type="com.articleshare.webproject.domain.article.ArticleScore">
         <id column="evaluateId" jdbcType="INTEGER" property="evaluateId"/>

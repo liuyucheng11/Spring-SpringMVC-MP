@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +27,9 @@ public class UserServiceImpl implements UserService {
     //登录校验
     public Map userLogin(String userName, String password) {
         Map<String, Object> loginResult = new HashMap<>();
+        boolean exist;
         try {
             User user = userMapper.doUserLogin(userName);
-            boolean exist;
-
             if (user == null) {
                 exist = false;
                 loginResult.put("isExist", exist);
@@ -43,18 +42,35 @@ public class UserServiceImpl implements UserService {
                 exist = true;
                 loginResult.put("isExist", exist);
             }
+            return loginResult;
+        } catch (Exception e) {
+            loginResult.put("hasExcept", true);
+
+        }finally {
             return  loginResult;
         }
-        catch (Exception e) {
-              loginResult.put("hasExcept",true);
-              return  loginResult;
-        }
     }
 
+    /**
+     * 用户注册事件
+     * @param user
+     */
     @Override
-    public void doRegister() {
-
+    public void doRegister(@RequestBody User user) {
+        userMapper.insert(user);
     }
+
+    /**
+     * 根据用户名全名查找
+     * @param userName
+     * @return
+     */
+    @Override
+    public User findByUserName(String userName) {
+        return    userMapper.findUserByName(userName);
+    }
+
+
 }
 
 

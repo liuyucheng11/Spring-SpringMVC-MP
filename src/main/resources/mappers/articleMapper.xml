@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.studentAdmin.dao.mapper.ArticleMapper">
     <sql id="Base_Article_Information">
-        article.articleid as articleId,
+        article.article_id as articleId,
         article.article_name as articleName,
-        article.userId as userId,
+        article.user_id as userId,
         article.homeUrl as  homeUrl,
         article.publish_date as publishDate,
         article.article_desc as articleDesc,
@@ -26,13 +26,13 @@
         SELECT
         <include refid="Base_Article_Information"/>
         ,user.user_name as userName from article
-        left join user on user.user_id = article.userId
+        left join user on user.user_id = article.user_id
         where
         article.article_name like "%"#{articleTitle}"%"
     </select>
     <select id="qryScoreMap" parameterType="Long" resultType="com.studentAdmin.domain.Dto.ScoreDto">
 
-SELECT article_score.score as score ,count( * ) AS count FROM article_score WHERE article_score.articleId = #{articleId} GROUP BY score
+SELECT article_score.score as score ,count( * ) AS count FROM article_score WHERE article_score.article_id = #{articleId} GROUP BY score
 
 
     </select>
@@ -40,21 +40,21 @@ SELECT article_score.score as score ,count( * ) AS count FROM article_score WHER
         SELECT
         <include refid="Base_Article_Information"/>
         , user.user_name as userName from article
-        left join user on user.user_id = article.userId
-        where article.articleId = #{articleId}
+        left join user on user.user_id = article.user_id
+        where article.article_id = #{articleId}
     </select>
     <select id="qryArticleComments" parameterType="Long" resultType="com.studentAdmin.domain.VOs.ArticleScoreVO">
             SELECT  article_score.evaluate_id as evaluateId,
-                    article_score.userId as userId,
+                    article_score.user_id as userId,
                     article_score.score as score,
                     article_score.create_date as createDate,
                     article_score.like_number as likeNumber,
                     article_score.comment as comment,
                     user.user_name as userName
                     from article_score
-                    left join user on user.user_id = article_score.userId
+                    left join user on user.user_id = article_score.user_id
                     where
-                        article_score.articleId = #{articleId}
+                        article_score.article_id = #{articleId}
     </select>
 
     <!--<select id="qryArticle" parameterType="java.util.Map"
@@ -175,6 +175,4 @@ SELECT article_score.score as score ,count( * ) AS count FROM article_score WHER
     <delete id="deleteArticleById">
         delete from article where articleId = #{articleId}
     </delete>-->
-
-
 </mapper>

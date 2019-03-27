@@ -1,5 +1,6 @@
 package com.studentAdmin.controller;
 
+import com.common.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.studentAdmin.dao.mapper.ArticleMapper;
@@ -9,6 +10,7 @@ import com.studentAdmin.domain.VOs.ArticleVO;
 import com.studentAdmin.service.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,10 +29,11 @@ public class ArticleController {
     @Autowired
     ArticleMapper articleMapper;
     @Autowired
-     ArticleServiceImpl articleService;
+    ArticleServiceImpl articleService;
 
     /**
      * 分页查询
+     *
      * @param request
      * @param
      * @param
@@ -41,15 +44,15 @@ public class ArticleController {
     public PageInfo<Article> ArticleSearch(HttpServletRequest request) {
         String URI = request.getRequestURI();
         HttpSession session = request.getSession();
-        Integer pageNum =Integer.parseInt(request.getParameter("pageNum"));
+        Integer pageNum = Integer.parseInt(request.getParameter("pageNum"));
         Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
 
         boolean isNewSession = session.isNew();
         /*默认页号为 1 ,大小为 10*/
-        if(pageNum == null){
-            pageNum =1;
+        if (pageNum == null) {
+            pageNum = 1;
         }
-        if(pageSize==null){
+        if (pageSize == null) {
             pageSize = 10;
         }
         PageHelper.startPage(pageNum, pageSize);
@@ -59,31 +62,52 @@ public class ArticleController {
 
     /**
      * 评论分页
+     *
      * @param articleId
      * @param request
      * @return
      */
     @RequestMapping("/qryArticleComment.do")
     @ResponseBody
-    public PageInfo<ArticleScoreVO> qryArticleScoreVOs(long articleId,HttpServletRequest request){
-        Integer pageNum =Integer.parseInt(request.getParameter("pageNum"));
+    public PageInfo<ArticleScoreVO> qryArticleScoreVOs(long articleId, HttpServletRequest request) {
+        Integer pageNum = Integer.parseInt(request.getParameter("pageNum"));
         Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
         List<ArticleScoreVO> list = articleService.qryArticleComments(articleId);
-        if(pageNum == null){
-            pageNum =1;
+        if (pageNum == null) {
+            pageNum = 1;
         }
-        if(pageSize==null){
+        if (pageSize == null) {
             pageSize = 10;
         }
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<ArticleScoreVO>(list);
     }
+
     @RequestMapping("/qryArticleInfo.do")
     @ResponseBody
-        public ArticleVO qryArticleInfo(long articleId){
-          ArticleVO articleVO = articleService.qryArticleInfo(articleId);
-          return  articleVO;
-        }
+    public ArticleVO qryArticleInfo(long articleId) {
+        ArticleVO articleVO = articleService.qryArticleInfo(articleId);
+        return articleVO;
     }
+
+    /**
+     * 发表文章
+     * @param request
+     * @return
+     */
+    @RequestMapping("/publishArticle.do")
+    @ResponseBody
+    public Result publishArticle(HttpServletRequest request){
+         String content = request.getParameter("content");
+         String articleName = request.getParameter("articleName");
+         String articleDesc = request.getParameter("articleDesc");
+         String articleType = request.getParameter("articleType");
+         Article article = new Article(articleName,Long.parseLong(articleType),articleDesc);
+        return articleService.publishArticle(article,content);
+    }
+}
+
+
+
 
 
