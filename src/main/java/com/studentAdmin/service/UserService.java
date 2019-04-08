@@ -1,8 +1,11 @@
 package com.studentAdmin.service;
 
+import com.common.Result;
 import com.studentAdmin.domain.User;
 import com.studentAdmin.domain.VOs.UserVO;
+import com.studentAdmin.domain.common.CommonException;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -29,4 +32,13 @@ public interface UserService {
      * @return
      */
     public User findByUserName(String userName);
+
+    /**
+     * 阅读文章
+     * @param articleId
+     * @return
+     * @throws CommonException
+     * @throws IOException
+     */
+    public Result readArticle(Long articleId) throws CommonException, IOException;
 }

@@ -36,6 +36,12 @@ public class Common {
 
     private static final String msg_8 = "注册失败，服务器错误!";
 
+    private static final int code_9 = 9;
+    private static final String msg_9 = "获取文章信息失败";
+
+    private static final  int code_10 = 10;
+    private static final  String msg_10 = "当前未登录,请重新登录后执行此操作!";
+
     public static int getCode_7() {
         return code_7;
     }
@@ -97,5 +103,21 @@ public class Common {
 
     public static String getMsg_8() {
         return msg_8;
+    }
+
+    public static int getCode_9() {
+        return code_9;
+    }
+
+    public static String getMsg_9() {
+        return msg_9;
+    }
+
+    public static int getCode_10() {
+        return code_10;
+    }
+
+    public static String getMsg_10() {
+        return msg_10;
     }
 }

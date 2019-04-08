@@ -28,5 +28,11 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-
+    <!--配置拦截器拦截以.do为结尾请求的方法-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*.do"/>
+            <bean class="com.interceptor.InterceptorImpl"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

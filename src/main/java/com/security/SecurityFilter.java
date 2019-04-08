@@ -35,7 +35,8 @@ public class SecurityFilter implements Filter {
         String requestURI = hostRequest.getRequestURI();
         HttpSession httpSession = hostRequest.getSession();
         System.out.println(hostRequest.getSession().getId());
-        if (requestURI.endsWith(".do") && httpSession.getAttribute("user") == null) {
+        //拦截器做了不用
+        /*if (requestURI.endsWith(".do") && httpSession.getAttribute("user") == null) {
             try {
                 wrapper.sendRedirect("/error");
                 return;
@@ -44,8 +45,9 @@ public class SecurityFilter implements Filter {
             }
         } else {
             //链式处理
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
+        }*/
+        filterChain.doFilter(servletRequest, servletResponse);
+
     }
     @Override
     public void destroy() {

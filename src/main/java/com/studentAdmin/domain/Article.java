@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @TableName(value = "article")
-public class Article {
+public class Article implements Serializable {
+    private static final long serialVersionUID = -5596158999688581603L;
     @TableId("article_id")
     private long articleId;
 
