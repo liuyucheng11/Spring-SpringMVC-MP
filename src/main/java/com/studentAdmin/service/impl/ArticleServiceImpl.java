@@ -2,17 +2,21 @@ package com.studentAdmin.service.impl;
 
 import com.common.Result;
 import com.studentAdmin.dao.mapper.ArticleMapper;
+import com.studentAdmin.dao.mapper.ArticleScoreMapper;
 import com.studentAdmin.domain.Article;
+import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.Dto.ScoreDto;
 import com.studentAdmin.domain.User;
 import com.studentAdmin.domain.VOs.ArticleScoreVO;
 import com.studentAdmin.domain.VOs.ArticleVO;
 import com.studentAdmin.domain.common.Common;
+import com.studentAdmin.domain.common.CommonException;
 import com.studentAdmin.service.ArticleService;
 import com.studentAdmin.util.SessionUtil;
 import com.studentAdmin.util.UrlGenerationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
@@ -33,6 +37,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     ArticleMapper articleMapper;
+    @Autowired
+    ArticleScoreMapper articleScoreMapper;
     final int[] base = {1, 2, 3, 4, 5};
     final DecimalFormat decimalFormat = new DecimalFormat(".00");
 
@@ -140,5 +146,24 @@ public class ArticleServiceImpl implements ArticleService {
         return Result.ok();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void publishComment(ArticleScore articleScore) throws CommonException {
+        Long articleId = articleScore.getArticleId();
+        Long userId = articleScore.getUserId();
+        articleScore.setCreateDate(new java.sql.Date(System.currentTimeMillis()));
+        if (articleId == null || userId == null){
+            throw new CommonException("传入参数异常！");
+        }
+            if(checkComment(articleId,userId)!=null){
+                throw new CommonException("您已经评价过此文章了");
+            }
+             articleScoreMapper.insert(articleScore);
+    }
+
+    @Override
+    public Object checkComment(Long articleId, Long userId) {
+       return articleMapper.queryCommentByMap(articleId,userId);
+     }
 
 }

@@ -20,6 +20,10 @@
     <select id="findUserByName" resultType="com.studentAdmin.domain.User">
          select <include refid="User"/> from user where user.user_name = #{userName}
     </select>
+    <insert id="collectArticle">
+          insert into article_collect (article_id,user_id,collect_date)
+            values (#{articleId},#{userId},now());
+    </insert>
     <!--<resultMap id="ArticleScore" type="com.articleshare.webproject.domain.article.ArticleScore">
         <id column="evaluateId" jdbcType="INTEGER" property="evaluateId"/>
         <id column="userId" jdbcType="INTEGER" property="userId"/>

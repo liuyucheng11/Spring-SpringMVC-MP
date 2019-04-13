@@ -2,6 +2,7 @@ package com.studentAdmin.dao.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.studentAdmin.domain.Article;
+import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.Dto.ScoreDto;
 import com.studentAdmin.domain.VOs.ArticleScoreVO;
 import com.studentAdmin.domain.VOs.ArticleVO;
@@ -19,15 +20,23 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface ArticleMapper extends BaseMapper<Article> {
-    public void publishArticle(Article article);
+     void publishArticle(Article article);
 
-    public List<Article> searchArticle(String articleTitle);
+     List<Article> searchArticle(Map param);
 
-    public List<ScoreDto> qryScoreMap(Long articleId);
+     List<ScoreDto> qryScoreMap(Long articleId);
 
-    public ArticleVO searchArticleById(Long articleId);
+     ArticleVO searchArticleById(Long articleId);
 
-    public List<ArticleScoreVO> qryArticleComments(@Param("articleId") Long articleId);
+     List<ArticleScoreVO> qryArticleComments(@Param("articleId") Long articleId);
+
+     ArticleScore queryCommentByMap(@Param("articleId") Long articleId,@Param("userId") Long userId);
+
+     Long queryClickNum(@Param("articleId") Long articleId);
+
+     Long queryCollectNum(@Param("articleId") Long articleId);
+
+
 
 
 }

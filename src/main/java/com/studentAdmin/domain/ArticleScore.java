@@ -11,9 +11,9 @@ public class ArticleScore {
  @TableId("evaluate_id")
   private long evaluateId;
  @TableField("user_id")
-  private long userId;
+  private Long userId;
  @TableField("article_id")
-  private long articleId;
+  private Long articleId;
  @TableField("score")
   private long score;
  @TableField("comment")

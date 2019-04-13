@@ -42,6 +42,12 @@ public class Common {
     private static final  int code_10 = 10;
     private static final  String msg_10 = "当前未登录,请重新登录后执行此操作!";
 
+    private static  final  int code_11 = 11;
+    private static  final  String msg_11 = "您已发表过对此文章的评价";
+
+    private static final  int code_12 = 12;
+    private static final  String msg_12 = "上传头像图片格式有误!";
+
     public static int getCode_7() {
         return code_7;
     }
@@ -119,5 +125,21 @@ public class Common {
 
     public static String getMsg_10() {
         return msg_10;
+    }
+
+    public static int getCode_11() {
+        return code_11;
+    }
+
+    public static String getMsg_11() {
+        return msg_11;
+    }
+
+    public static int getCode_12() {
+        return code_12;
+    }
+
+    public static String getMsg_12() {
+        return msg_12;
     }
 }

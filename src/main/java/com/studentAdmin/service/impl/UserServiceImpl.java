@@ -1,24 +1,32 @@
 package com.studentAdmin.service.impl;
 
 import com.common.Result;
+import com.studentAdmin.dao.mapper.ArticleCollectMapper;
 import com.studentAdmin.dao.mapper.ArticleMapper;
+import com.studentAdmin.dao.mapper.UserAvatarMapper;
 import com.studentAdmin.dao.mapper.UserMapper;
 import com.studentAdmin.domain.Article;
+import com.studentAdmin.domain.ArticleCollect;
 import com.studentAdmin.domain.User;
+import com.studentAdmin.domain.UserAvatar;
 import com.studentAdmin.domain.VOs.UserVO;
 import com.studentAdmin.domain.common.Common;
 import com.studentAdmin.domain.common.CommonException;
 import com.studentAdmin.service.UserService;
+import com.studentAdmin.util.SessionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +41,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     ArticleMapper articleMapper;
+
+    @Autowired
+    UserAvatarMapper userAvatarMapper;
+
+    @Autowired
+    ArticleCollectMapper articleCollectMapper;
 
     @Override
     //登录校验
@@ -91,16 +105,22 @@ public class UserServiceImpl implements UserService {
         }
         Result result = new Result();
         Article article = new Article();
+        Long collectNum;
+        Long clickNum;
         try {
-            article = articleMapper.selectById(articleId);
+            article = articleMapper.searchArticleById(articleId);
+             collectNum = articleMapper.queryCollectNum(articleId);
+             clickNum = articleMapper.queryClickNum(articleId);
         } catch (Exception e) {
             return result.error(Common.getCode_9(),Common.getMsg_9());
         }
         result.put("article",article);
+        result.put("collectNum",collectNum);
+        result.put("clickNum",clickNum);
         String url = article.getHomeUrl();
         StringBuffer articleContent = new StringBuffer();
         File file = new File(url);
-        String encoding = "utf-8";
+        String encoding = "gbk";
         //文件是否存在
         if (file.isFile() && file.exists()) {
             InputStreamReader read = null;//考虑到编码格式
@@ -122,11 +142,72 @@ public class UserServiceImpl implements UserService {
             read.close();
         }
        result.put("articleContent",articleContent);
+        result.put("article",article);
         return  result;
 
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void uploadAvatar(MultipartFile file ,String url) throws Exception {
+        User user = (User)SessionUtil.getSessionAttribute("user");
+        if(user == null){
+            throw new CommonException(Common.getMsg_10());
+        }
+        try{
+            File avatarFile = new File(url);
+            if(avatarFile.exists()){
+                //删除已有头像文件
+                avatarFile.delete();
+            }
+            avatarFile.createNewFile();
+            //写入文件
+            file.transferTo(avatarFile);
+        }catch (Exception e){
+            throw new CommonException("文件流错误!");
+        }
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("user_id",user.getUserId());
+        //删除表中存在
+        try{
+            userAvatarMapper.deleteByMap(map);
+            UserAvatar userAvatar = new UserAvatar();
+            userAvatar.setAvatarUrl(url);
+            userAvatar.setUserId(user.getUserId());
+            userAvatar.setCreateDate(new Date(System.currentTimeMillis()));
+            userAvatar.setModifyDate(new Date(System.currentTimeMillis()));
+            userAvatarMapper.insert(userAvatar);
+        }catch (Exception e){
+            throw new CommonException("操作异常");
+        }
+
+
+    }
+
+    @Override
+    public List<UserAvatar> getUserAvatar(Long userId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("user_id",userId);
+        return userAvatarMapper.selectByMap(map);
+    }
+
+    @Override
+    public Result collectArticle(Long articleId, Long userId) throws CommonException {
+        Map<String,Object> param = new HashMap<String,Object>();
+        param.put("article_id",articleId);
+        param.put("user_id",userId);
+        List<ArticleCollect> articleCollects =  articleCollectMapper.selectByMap(param);
+        if(articleCollects.size() == 0){
+            try{
+                userMapper.collectArticle(articleId,userId);
+
+            }catch (Exception e){
+                throw new CommonException("收藏异常!");
+            }
+        }
+       return Result.ok();
+    }
 }
 
 

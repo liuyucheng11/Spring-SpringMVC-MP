@@ -15,7 +15,7 @@ public class ArticleCollect {
   @TableField("article_id")
   private long articleId;
   @TableField("collect_date")
-  private java.sql.Date collectDate;
+  private java.util.Date collectDate;
 
 
   public long getUserId() {
@@ -45,7 +45,7 @@ public class ArticleCollect {
   }
 
 
-  public java.sql.Date getCollectDate() {
+  public java.util.Date getCollectDate() {
     return collectDate;
   }
 

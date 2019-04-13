@@ -19,8 +19,8 @@ public class InterceptorImpl implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //判断是否登录进行拦截请求
-        PrintWriter printWriter = response.getWriter();
-        if (request.getSession().getAttribute("user") == null && request.getRequestURI().endsWith("*.do") == true) {
+        if (request.getSession().getAttribute("user") == null) {
+            PrintWriter printWriter = response.getWriter();
             //设置返回值，前端可获取错误信息
             Result result =   Result.error(Common.getCode_10(),Common.getMsg_10());
             JSONObject jsonObject = JSONObject.fromObject(result);

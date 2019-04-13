@@ -2,10 +2,14 @@ package com.studentAdmin.service;
 
 import com.common.Result;
 import com.studentAdmin.domain.User;
+import com.studentAdmin.domain.UserAvatar;
 import com.studentAdmin.domain.VOs.UserVO;
 import com.studentAdmin.domain.common.CommonException;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,4 +45,25 @@ public interface UserService {
      * @throws IOException
      */
     public Result readArticle(Long articleId) throws CommonException, IOException;
+
+    /**
+     * 头像管理
+     * @param file
+     * @param url
+     * @throws Exception
+     */
+     void uploadAvatar(MultipartFile file ,String url) throws Exception;
+
+
+    /**
+     * 获取头像
+     * @return
+     */
+     List<UserAvatar> getUserAvatar(Long userId);
+
+    /**
+     * 收藏文章
+     */
+      Result collectArticle(Long articleId, Long userId) throws CommonException;
+
 }

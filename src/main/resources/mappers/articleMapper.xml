@@ -21,20 +21,27 @@
         #{publishDate}
         )
     </insert>
-    <select id="searchArticle" parameterType="java.lang.String"
+    <select id="searchArticle" parameterType="java.util.HashMap"
             resultType="com.studentAdmin.domain.Article">
         SELECT
         <include refid="Base_Article_Information"/>
         ,user.user_name as userName from article
         left join user on user.user_id = article.user_id
-        where
-        article.article_name like "%"#{articleTitle}"%"
+        <where>
+            <if test="articleName !=null and articleName !=''">article.article_name like
+                concat('%',#{articleName},'%')
+            </if>
+            <if test="type !=null ">
+                and article.article_type = #{type}
+            </if>
+        </where>
     </select>
     <select id="qryScoreMap" parameterType="Long" resultType="com.studentAdmin.domain.Dto.ScoreDto">
 
-SELECT article_score.score as score ,count( * ) AS count FROM article_score WHERE article_score.article_id = #{articleId} GROUP BY score
-
-
+       SELECT article_score.score as score ,count( * ) AS count
+        FROM article_score
+        WHERE article_score.article_id = #{articleId}
+         GROUP BY score
     </select>
     <select id="searchArticleById" resultType="com.studentAdmin.domain.VOs.ArticleVO" parameterType="Long">
         SELECT
@@ -46,6 +53,7 @@ SELECT article_score.score as score ,count( * ) AS count FROM article_score WHER
     <select id="qryArticleComments" parameterType="Long" resultType="com.studentAdmin.domain.VOs.ArticleScoreVO">
             SELECT  article_score.evaluate_id as evaluateId,
                     article_score.user_id as userId,
+                    article_score.article_id articleId,
                     article_score.score as score,
                     article_score.create_date as createDate,
                     article_score.like_number as likeNumber,
@@ -175,4 +183,27 @@ SELECT article_score.score as score ,count( * ) AS count FROM article_score WHER
     <delete id="deleteArticleById">
         delete from article where articleId = #{articleId}
     </delete>-->
+    <select id="queryCommentByMap" resultType="com.studentAdmin.domain.ArticleScore">
+         select evaluate_id evaluateId,
+                user_id userId,
+                article_id articleId,
+                score score,
+                comment comment,
+                create_date createDate,
+                like_number likeNumber
+                from article_score
+                where user_id = #{userId}
+                and article_id = #{articleId}
+
+
+    </select>
+    <select id="queryClickNum" resultType="java.lang.Long">
+          select count(*) from click_log
+            where article_id = #{articleId}
+
+    </select>
+    <select id="queryCollectNum" resultType="java.lang.Long" >
+            select count(*) from article_collect
+            where article_collect.article_id = #{articleId}
+    </select>
 </mapper>

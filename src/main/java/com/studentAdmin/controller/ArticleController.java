@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author:liu.yucheng
@@ -44,8 +46,15 @@ public class ArticleController {
     public PageInfo<Article> ArticleSearch(HttpServletRequest request) {
         String URI = request.getRequestURI();
         HttpSession session = request.getSession();
+        String  articleName = request.getParameter("articleName");
         Integer pageNum = Integer.parseInt(request.getParameter("pageNum"));
         Integer pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        Integer type ;
+           if(request.getParameter("type") == ""||request.getParameter("type")==null){
+                  type = null;
+           }else{
+               type = Integer.parseInt(request.getParameter("type"));
+           }
 
         boolean isNewSession = session.isNew();
         /*默认页号为 1 ,大小为 10*/
@@ -55,8 +64,13 @@ public class ArticleController {
         if (pageSize == null) {
             pageSize = 10;
         }
+        Map<String,Object> map = new HashMap();
+        map.put("pageNum",pageNum);
+        map.put("pageSize",pageSize);
+        map.put("type",type);
+        map.put("articleName",articleName);
         PageHelper.startPage(pageNum, pageSize);
-        List<Article> list = articleMapper.searchArticle("");
+        List<Article> list = articleMapper.searchArticle(map);
         return new PageInfo<Article>(list);
     }
 

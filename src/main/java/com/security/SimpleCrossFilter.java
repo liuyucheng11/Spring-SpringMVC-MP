@@ -20,7 +20,11 @@ public class SimpleCrossFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        HttpServletRequest request = (HttpServletRequest) req;
+         String headers = request.getHeader("Access-Control-Request-Headers");
+
+        response.setHeader("Access-Control-Allow-Origin", "http://10.112.250.163:8080");
+        response.setHeader("Access-Control-Expose-Headers","*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
