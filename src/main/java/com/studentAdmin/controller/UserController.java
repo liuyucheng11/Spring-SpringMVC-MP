@@ -10,9 +10,11 @@ import com.studentAdmin.domain.UserAvatar;
 import com.studentAdmin.domain.common.Common;
 import com.studentAdmin.domain.common.CommonException;
 import com.studentAdmin.service.ArticleService;
+import com.studentAdmin.service.UserFollowService;
 import com.studentAdmin.service.UserService;
 import com.studentAdmin.util.SessionUtil;
 import com.studentAdmin.util.UrlGenerationUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,8 @@ public class UserController {
     UserService userService;
     @Autowired
     ArticleService articleService;
+    @Autowired
+    UserFollowService userFollowService;
 
     @Deprecated
     @RequestMapping("/login.do")
@@ -252,5 +256,18 @@ public class UserController {
         }
         Long followedId = userId;
        return  userService.followUser(user.getUserId(),followedId);
+    }
+
+    @RequestMapping("getFollowUserList.do")
+    @ResponseBody
+    public Result getFollowUserList(@RequestParam("page") long page ,@RequestParam("limit") long limit) {
+        User user = (User)SessionUtil.getSessionAttribute("user");
+        Map<String,Object> param = new HashMap<>();
+          param.put("page",page);
+          param.put("limit",limit);
+          param.put("userId",user.getUserId());
+          QueryParam queryParam = new QueryParam(param);
+          ResultPage resultPage =  userFollowService.getUserFollowList(queryParam);
+          return  Result.ok().put("page",resultPage);
     }
 }
