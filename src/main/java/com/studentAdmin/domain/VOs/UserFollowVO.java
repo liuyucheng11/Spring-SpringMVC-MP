@@ -1,9 +1,4 @@
 package com.studentAdmin.domain.VOs;
-
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.Date;
 
 /**
@@ -13,7 +8,9 @@ import java.util.Date;
  */
 
 public class UserFollowVO extends UserVO {
-    Date createDate;
+    private Date createDate;
+
+    private  Long followId;
 
     public Date getCreateDate() {
         return createDate;
@@ -21,5 +18,13 @@ public class UserFollowVO extends UserVO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Long getFollowId() {
+        return followId;
+    }
+
+    public void setFollowId(Long followId) {
+        this.followId = followId;
     }
 }

@@ -7,12 +7,14 @@
 	user.user_id userId,
 	user.user_name userName,
 	user.sex sex,
-	user.user_occupation,
-	create_date createDate,
-	user.user_age userAge
+	user.user_occupation userOccupation,
+	a.create_date createDate,
+	user.user_age userAge,
+	a.follow_id followId
      FROM
-	USER RIGHT JOIN ( SELECT followed_id, create_date ,user_id FROM user_follow ) a ON a.followed_id = USER.user_id
+	USER RIGHT JOIN ( SELECT followed_id,follow_id, create_date ,user_id FROM user_follow ) a ON a.followed_id = USER.user_id
 	  where a.user_id =#{userId}
 	  order by createDate desc
+
     </select>
 </mapper>
