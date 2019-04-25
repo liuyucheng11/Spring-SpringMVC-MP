@@ -1,6 +1,7 @@
 package com.studentAdmin.dao.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.common.QueryParam;
 import com.studentAdmin.domain.Article;
 import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.Dto.ScoreDto;
@@ -35,6 +36,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
      Long queryClickNum(@Param("articleId") Long articleId);
 
      Long queryCollectNum(@Param("articleId") Long articleId);
+
+     List<ArticleVO> getArticlesByUserId(QueryParam param);
 
 
 

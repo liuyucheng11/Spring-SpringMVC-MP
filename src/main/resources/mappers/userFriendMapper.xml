@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.UserFriendMapper">
+    <select id="checkFriendShip" resultType="com.studentAdmin.domain.UserFriend">
+        select id id,
+               user_id userId,
+               friend_id friendId,
+               create_date createDate
+               from user_friend
+               where
+                ( user_id = #{userId} and friend_id = #{friendId})
+                or
+                ( user_id = #{friend}  and friend_id = #{userId})
+    </select>
+    <insert id="beFriendShip">
+           insert into user_friend (user_id , friend_id , create_time )
+            values (#{userId},#{friendId},now())
+    </insert>
+
+    <delete id="deleteFriendShip">
+
+          delete from user_friend
+           where
+                ( user_id = #{userId} and friend_id = #{friendId})
+                or
+                ( user_id = #{friend}  and friend_id = #{userId})
+    </delete>
+
+    <select id="qryUserFriend" resultType="com.studentAdmin.domain.UserFriend">
+
+    SELECT
+    USER.user_id userId,
+	USER.user_name userName,
+	USER.sex sex,
+	USER.user_occupation occupation,
+	a.createDate createDate,
+	USER.user_age userAge,
+	user_avatar.avatar_url user_avatar
+
+FROM
+	USER RIGHT JOIN (
+SELECT
+friend_id friendId,
+create_date createDate
+FROM
+`user_friend`
+WHERE
+user_id = #{userId} UNION
+( SELECT user_id friendId, create_date createDate FROM `user_friend` WHERE friend_id = #{userId} )
+	) a ON a.friendId = USER.user_id
+LEFT JOIN user_avatar ON user_avatar.user_id = USER.user_id
+    </select>
+
+
+</mapper>

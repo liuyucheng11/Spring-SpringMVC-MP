@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName("user_follow")
 public class UserFollow {
@@ -14,6 +16,8 @@ public class UserFollow {
   private long userId;
  @TableField("followed_id")
   private long followedId;
+ @TableField("create_date")
+   private Date createDate;
 
   public long getFollowId() {
     return followId;

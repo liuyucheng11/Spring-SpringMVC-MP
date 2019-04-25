@@ -18,12 +18,82 @@
         from user where user.user_name = #{userName}
     </select>
     <select id="findUserByName" resultType="com.studentAdmin.domain.User">
-         select <include refid="User"/> from user where user.user_name = #{userName}
+        select
+        <include refid="User"/>
+        from user where user.user_name = #{userName}
     </select>
     <insert id="collectArticle">
           insert into article_collect (article_id,user_id,collect_date)
             values (#{articleId},#{userId},now());
     </insert>
+    <select id="getOtherUser" resultType="com.studentAdmin.domain.VOs.UserVO">
+
+        SELECT
+        c.*,
+        count( d.user_id ) articleCount
+        FROM
+        (
+        SELECT
+        a.*,
+        count( b.followed_id ) followCount
+        FROM
+        (
+        SELECT USER
+        .user_id userId,
+        USER.user_name userName,
+        USER.sex sex,
+        USER.user_occupation userOccupation,
+        USER.user_age userAge,
+        user_avatar.avatar_url userAvatarUrl,
+        user.register_date registerDate
+
+        FROM
+        USER LEFT JOIN user_avatar ON USER.user_id = user_avatar.user_id
+        ) a
+        LEFT JOIN ( SELECT user_follow.followed_id FROM user_follow ) b ON a.userId = b.followed_id
+        <where>
+            <if test="userName !=null and userName !=''">
+                a.userName like concat('%',#{userName},'%')
+            </if>
+        </where>
+        GROUP BY
+        a.userId
+        ) c
+        LEFT JOIN ( SELECT article.user_id FROM article ) d ON c.userId = d.user_id
+        GROUP BY
+        c.userId
+        <if test="isOrder !=false ">
+            order by followCount desc
+        </if>
+
+
+    </select>
+    <select id="checkIsFriend" resultType="com.studentAdmin.domain.UserFollow">
+     select follow_id followId,
+            user_id userId,
+            followed_id followedId,
+            create_date createDate
+            from user_follow
+            where
+             user_id = #{userId}
+            and followed_id =#{followedId}
+
+    </select>
+    <insert id="followUser">
+         insert into user_follow (user_id,followed_id,create_date)
+         values (#{userId},#{followedId},now())
+    </insert>
+    <select id="qryUserFollowByUserId" resultType="com.studentAdmin.domain.UserFollow">
+          select follow_id followId,
+            user_id userId,
+            followed_id followedId,
+            create_date createDate
+            from user_follow
+            where
+             userId = #{userId}
+
+
+    </select>
     <!--<resultMap id="ArticleScore" type="com.articleshare.webproject.domain.article.ArticleScore">
         <id column="evaluateId" jdbcType="INTEGER" property="evaluateId"/>
         <id column="userId" jdbcType="INTEGER" property="userId"/>

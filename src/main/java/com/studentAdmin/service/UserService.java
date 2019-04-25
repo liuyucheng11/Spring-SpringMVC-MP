@@ -1,6 +1,8 @@
 package com.studentAdmin.service;
 
+import com.common.QueryParam;
 import com.common.Result;
+import com.common.ResultPage;
 import com.studentAdmin.domain.User;
 import com.studentAdmin.domain.UserAvatar;
 import com.studentAdmin.domain.VOs.UserVO;
@@ -65,5 +67,29 @@ public interface UserService {
      * 收藏文章
      */
       Result collectArticle(Long articleId, Long userId) throws CommonException;
+
+    /**
+     * 获取用户
+     * @param param
+     * @return
+     */
+
+      ResultPage getOtherUser(QueryParam param);
+
+    /**
+     * 根据userId获取相应的文章作品
+     * @param param
+     * @return
+     */
+      ResultPage getWorksByUserId(QueryParam param);
+
+    /**
+     * 关注用户
+     * @param userId
+     * @param followedId
+     * @return
+     */
+      Result followUser(Long userId, Long followedId);
+
 
 }

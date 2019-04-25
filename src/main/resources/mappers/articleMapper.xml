@@ -202,8 +202,42 @@
             where article_id = #{articleId}
 
     </select>
-    <select id="queryCollectNum" resultType="java.lang.Long" >
+    <select id="queryCollectNum" resultType="java.lang.Long">
             select count(*) from article_collect
             where article_collect.article_id = #{articleId}
+    </select>
+
+    <select id="getArticlesByUserId" resultType="com.studentAdmin.domain.VOs.ArticleVO">
+        SELECT
+	article.article_id articleId,
+	article.article_name articleName,
+	article.article_type articleType,
+	article.article_desc articleDesc,
+	article.publish_date publishDate,
+	article.homeUrl homeUrl,
+	USER.user_name userName,
+	ifNULL( a.scoreCount, 0 ) scoreCount,
+	ifNULL( a.avgScore, 0 ) avgScore,
+	ifNULL( b.collectCount, 0 ) collectCount
+FROM
+	article
+	LEFT JOIN USER ON USER.user_id = article.user_id
+	LEFT JOIN (
+SELECT
+	count( * ) scoreCount,
+	article_id AS articleId,
+	sum( article_score.score ) / count( article_score.article_id ) avgScore
+FROM
+	article_score
+GROUP BY
+	article_id
+	) a ON a.articleId = article.article_Id
+	LEFT JOIN ( SELECT count( article_id ) collectCount, article_id FROM article_collect GROUP BY article_id ) b ON b.article_id = article.article_id
+WHERE
+	USER.user_id = #{userId}
+GROUP BY
+	articleId
+
+
     </select>
 </mapper>

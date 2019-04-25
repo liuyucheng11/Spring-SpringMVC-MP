@@ -48,6 +48,15 @@ public class Common {
     private static final  int code_12 = 12;
     private static final  String msg_12 = "上传头像图片格式有误!";
 
+    private static final int code_13 = 13;
+    private static final  String msg_13 = "您已收藏过此文章";
+
+    private static final int code_14 = 14;
+    private static final  String msg_14 = "您已关注该用户!";
+
+    private static final  int code_15 = 15;
+    private static final   String msg_15 = "不能关注自己哦 ~~";
+
     public static int getCode_7() {
         return code_7;
     }
@@ -141,5 +150,29 @@ public class Common {
 
     public static String getMsg_12() {
         return msg_12;
+    }
+
+    public static int getCode_13() {
+        return code_13;
+    }
+
+    public static String getMsg_13() {
+        return msg_13;
+    }
+
+    public static int getCode_14() {
+        return code_14;
+    }
+
+    public static String getMsg_14() {
+        return msg_14;
+    }
+
+    public static int getCode_15() {
+        return code_15;
+    }
+
+    public static String getMsg_15() {
+        return msg_15;
     }
 }

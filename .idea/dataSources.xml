@@ -15,11 +15,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="article_recommend@localhost [2]" uuid="72b04948-0e71-41fa-9c41-50fc3e6aab27">
+    <data-source source="LOCAL" name="article_blog@localhost" uuid="5b4f46be-41bb-4ebd-9ee5-ffb5fb513ac9">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/article_recommend</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/article_blog</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

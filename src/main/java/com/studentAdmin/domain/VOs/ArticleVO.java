@@ -19,4 +19,8 @@ public class ArticleVO extends Article {
     //平均分
     Double avgScore;
 
+    Long scoreCount;
+
+    Long collectCount;
+
 }

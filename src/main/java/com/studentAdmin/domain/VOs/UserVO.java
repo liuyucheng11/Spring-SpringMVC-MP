@@ -1,5 +1,8 @@
 package com.studentAdmin.domain.VOs;
 
+/**
+ * 用户分页列表用
+ */
 public class UserVO {
 
     private long userId;
@@ -9,7 +12,11 @@ public class UserVO {
     private java.sql.Timestamp registerDate;
     private String userAddress;
     private long userAge;
+    private String userAvatarUrl;
 
+    private Long followCount;
+
+    private Long articleCount;
 
     public long getUserId() {
         return userId;
@@ -73,4 +80,27 @@ public class UserVO {
         this.userAge = userAge;
     }
 
+    public String getUserAvatarUrl() {
+        return userAvatarUrl;
+    }
+
+    public void setUserAvatarUrl(String userAvatarUrl) {
+        this.userAvatarUrl = userAvatarUrl;
+    }
+
+    public Long getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(Long followCount) {
+        this.followCount = followCount;
+    }
+
+    public Long getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(Long articleCount) {
+        this.articleCount = articleCount;
+    }
 }
