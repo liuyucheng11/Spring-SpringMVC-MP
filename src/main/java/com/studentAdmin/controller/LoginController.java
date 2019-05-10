@@ -8,12 +8,14 @@ import com.studentAdmin.domain.common.Common;
 import com.studentAdmin.service.UserService;
 import com.studentAdmin.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.socket.WebSocketHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +33,11 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Bean // 这个注解会从Spring容器拿出Bean
+    public WebSocketHandler infoHandler() {
+        return new com.studentAdmin.webSocket.WebSocketHandler();
+    }
+
     @RequestMapping("/login.do_")
     @ResponseBody
     public Map doLogin( @RequestBody LoginDto loginDto) {
@@ -47,6 +54,9 @@ public class LoginController {
                 loginResult.put("user", user);
                 //将 user存入session中
                 SessionUtil.setSessionAttribute("user",user);
+
+                //登陆系统时注册到在线用户列表里
+
             } else{
                 loginResult.put("exist", true);
                 loginResult.put("passwordError",true);

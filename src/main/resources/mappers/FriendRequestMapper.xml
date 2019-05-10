@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.FriendRequestMapper">
+    <insert id="sendRequest">
+        insert into frend_request (sender_id, receiver_id, state, create_date)
+        values (#{sendId}, #{receiverId},0,now())
+    </insert>
+
+    <update id="agreeRequest">
+          update frend_request set state = 1
+          where id = #{id}
+    </update>
+
+    <update id="rejectRequest">
+          update frend_request set state = 2
+          where id = #{id}
+     </update>
+
+    <select id="qryRequest" resultType="com.studentAdmin.domain.VOs.FriendRequestVO">
+        select
+        request.id id,
+        request.sender_id senderId,
+        request.receiver_id receiverId,
+        request.create_date createDate,
+        sender.user_name senderName,
+        request.state state,
+        receiver.user_name receiverName
+        from frend_request request
+        left join user sender on sender.user_id = request.sender_id
+        left join user receiver on receiver.user_id = request.receiver_id
+        <where>
+            request.receiver_id = #{userId}
+            <if test="showFlag == 0">
+                and request.state = 0
+            </if>
+            <if test="showFlag == 1">
+                and request.state = 1
+            </if>
+            <if test="showFlag == 2">
+                and request.state = 2
+            </if>
+        </where>
+    </select>
+    <select id="checkRequestRead" resultType="com.studentAdmin.domain.FriendRequest">
+          select id id ,
+                sender_id senderId,
+                receiver_id receiverId,
+                state  state,
+                create_date createDate
+                from frend_request
+                where  frend_request.sender_id = #{senderId} and
+                frend_request.receiver_id = #{receiverId}
+                order by createDate desc limit 1
+    </select>
+</mapper>

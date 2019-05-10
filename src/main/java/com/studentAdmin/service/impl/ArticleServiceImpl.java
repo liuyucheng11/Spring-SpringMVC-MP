@@ -1,6 +1,10 @@
 package com.studentAdmin.service.impl;
 
+import com.common.QueryParam;
 import com.common.Result;
+import com.common.ResultPage;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.studentAdmin.dao.mapper.ArticleMapper;
 import com.studentAdmin.dao.mapper.ArticleScoreMapper;
 import com.studentAdmin.domain.Article;
@@ -152,18 +156,30 @@ public class ArticleServiceImpl implements ArticleService {
         Long articleId = articleScore.getArticleId();
         Long userId = articleScore.getUserId();
         articleScore.setCreateDate(new java.sql.Date(System.currentTimeMillis()));
-        if (articleId == null || userId == null){
+        if (articleId == null || userId == null) {
             throw new CommonException("传入参数异常！");
         }
-            if(checkComment(articleId,userId)!=null){
-                throw new CommonException("您已经评价过此文章了");
-            }
-             articleScoreMapper.insert(articleScore);
+        if (checkComment(articleId, userId) != null) {
+            throw new CommonException("您已经评价过此文章了");
+        }
+        articleScoreMapper.insert(articleScore);
     }
 
     @Override
     public Object checkComment(Long articleId, Long userId) {
-       return articleMapper.queryCommentByMap(articleId,userId);
-     }
+        return articleMapper.queryCommentByMap(articleId, userId);
+    }
 
+    @Override
+    public ResultPage getSelfPublishArticle(QueryParam param) {
+        Page<?> page = PageHelper.startPage(param.getPage(), param.getLimit());
+        List<ArticleVO> articleVOS = articleMapper.getArticlesByUserId(param);
+        return new ResultPage((int) page.getTotal(), param.getLimit(), page.getPages(), param.getPage(), articleVOS);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteArticle(long id) {
+          articleMapper.deleteById(id);
+    }
 }

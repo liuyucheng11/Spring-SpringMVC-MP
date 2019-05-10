@@ -30,7 +30,7 @@ public class JspController {
         ModelAndView mv = new ModelAndView(firstPage);
         return mv;
     }
-    @RequestMapping("/SecondPage.do")
+    @RequestMapping("/SecondPage.do_")
     public String getSecondPage(HttpServletRequest request, Mod mod){
         List<String> stringList = new ArrayList<>();
         for (int i = 0; i <6 ; i++) {
@@ -44,7 +44,7 @@ public class JspController {
         request.setAttribute("intList",integerList);
         return secondPage;
     }
-    @RequestMapping("/thirdPage.do")
+    @RequestMapping("/thirdPage.do_")
     public String getThirdPage(){
         return third;
     }

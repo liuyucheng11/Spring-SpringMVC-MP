@@ -7,7 +7,7 @@ import java.util.Date;
  * @version: 1.0
  */
 
-public class UserFollowVO extends UserVO {
+public class  UserFollowVO extends UserVO {
     private Date createDate;
 
     private  Long followId;

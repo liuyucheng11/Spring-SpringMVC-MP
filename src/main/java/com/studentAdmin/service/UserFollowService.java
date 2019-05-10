@@ -18,4 +18,6 @@ public interface UserFollowService  {
      */
     ResultPage getUserFollowList(QueryParam param);
 
+    void takeOffById(long id);
+
 }

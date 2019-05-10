@@ -1,6 +1,8 @@
 package com.studentAdmin.service;
 
+import com.common.QueryParam;
 import com.common.Result;
+import com.common.ResultPage;
 import com.studentAdmin.domain.Article;
 import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.VOs.ArticleScoreVO;
@@ -24,4 +26,8 @@ public interface ArticleService {
     Object checkComment(Long articleId, Long userId);
 
     void publishComment(ArticleScore articleScore) throws CommonException;
+
+    ResultPage getSelfPublishArticle(QueryParam param);
+
+     void deleteArticle(long id);
 }

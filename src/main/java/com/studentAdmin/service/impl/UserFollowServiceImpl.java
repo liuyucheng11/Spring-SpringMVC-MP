@@ -30,4 +30,9 @@ public class UserFollowServiceImpl implements UserFollowService {
         List<UserFollowVO> list =  userFollowMapper.getUserFollowList(param);
         return  new ResultPage((int) page.getTotal(),param.getLimit(),page.getPages(),param.getPage(),list);
     }
+
+    @Override
+    public void takeOffById(long id) {
+          userFollowMapper.deleteFollowById(id);
+    }
 }

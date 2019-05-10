@@ -3,26 +3,29 @@ package com.studentAdmin.domain;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.studentAdmin.domain.VOs.UserVO;
 import lombok.Data;
-
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author: liu.yucheng
- * @Date: 2019-4-23  16:11
+ * @Date: 2019-5-5  16:08
  * @version: 1.0
  */
-@TableName("user_friend")
+@TableName("friend_request")
 @Data
-public class UserFriend extends UserVO {
+public class FriendRequest {
     @TableId("id")
-    private Long id;
-    @TableField("user_id")
-    private Long friendId_2;
-    @TableField("friend_id")
-    private Long friendId;
+    private long id;
+    @TableField("sender_id")
+    private long senderId;
+    @TableField("receiver_id")
+    private long receiverId;
     @TableField("create_date")
     private Date createDate;
+    /**
+     * 0.发送 1.接受 2.拒绝
+     */
+    @TableField("state")
+    private int state;
+
 }

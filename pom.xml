@@ -193,6 +193,30 @@
       <artifactId>commons-io</artifactId>
       <version>2.4</version>
     </dependency>
+    <!--引入webSocket-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+     <artifactId>spring-messaging</artifactId>
+    <version>4.0.5.RELEASE</version>
+  </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-websocket</artifactId>
+      <version>4.0.5.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.6.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.5</version>
+    </dependency>
+
+
 
 
 

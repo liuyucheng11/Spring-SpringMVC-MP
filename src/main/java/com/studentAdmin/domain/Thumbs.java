@@ -3,26 +3,23 @@ package com.studentAdmin.domain;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.studentAdmin.domain.VOs.UserVO;
 import lombok.Data;
-
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author: liu.yucheng
- * @Date: 2019-4-23  16:11
+ * @Date: 2019-5-5  0:36
  * @version: 1.0
  */
-@TableName("user_friend")
+@TableName("thumbs_log")
 @Data
-public class UserFriend extends UserVO {
+public class Thumbs {
     @TableId("id")
-    private Long id;
+    private long id;
     @TableField("user_id")
-    private Long friendId_2;
-    @TableField("friend_id")
-    private Long friendId;
-    @TableField("create_date")
-    private Date createDate;
+    private long userId;
+    @TableField("thumb_id")
+    private long thumbId;
+    @TableField("create_time")
+    private Date createTime;
 }

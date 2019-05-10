@@ -10,10 +10,10 @@
                where
                 ( user_id = #{userId} and friend_id = #{friendId})
                 or
-                ( user_id = #{friend}  and friend_id = #{userId})
+                ( user_id = #{friendId}  and friend_id = #{userId})
     </select>
     <insert id="beFriendShip">
-           insert into user_friend (user_id , friend_id , create_time )
+           insert into user_friend (user_id , friend_id , create_date )
             values (#{userId},#{friendId},now())
     </insert>
 
@@ -27,28 +27,30 @@
     </delete>
 
     <select id="qryUserFriend" resultType="com.studentAdmin.domain.UserFriend">
-
-    SELECT
-    USER.user_id userId,
-	USER.user_name userName,
-	USER.sex sex,
-	USER.user_occupation occupation,
-	a.createDate createDate,
-	USER.user_age userAge,
-	user_avatar.avatar_url user_avatar
-
-FROM
-	USER RIGHT JOIN (
-SELECT
-friend_id friendId,
-create_date createDate
-FROM
-`user_friend`
-WHERE
-user_id = #{userId} UNION
-( SELECT user_id friendId, create_date createDate FROM `user_friend` WHERE friend_id = #{userId} )
-	) a ON a.friendId = USER.user_id
-LEFT JOIN user_avatar ON user_avatar.user_id = USER.user_id
+        select b.* from
+        ( SELECT
+        USER.user_id userId,
+        USER.user_name userName,
+        USER.sex sex,
+        USER.user_occupation occupation,
+        a.createDate createDate,
+        USER.user_age userAge
+        FROM
+        USER RIGHT JOIN (
+        SELECT
+        friend_id friendId,
+        create_date createDate
+        FROM
+        `user_friend`
+        WHERE
+        user_id = #{userId} UNION
+        ( SELECT user_id friendId, create_date createDate FROM `user_friend` WHERE friend_id = #{userId} )
+        ) a ON a.friendId = USER.user_id ) b
+        <where>
+            <if test="friendName!=null and friendName !=''">
+                b.userName like concat('%',#{friendName},'%')
+            </if>
+        </where>
     </select>
 
 

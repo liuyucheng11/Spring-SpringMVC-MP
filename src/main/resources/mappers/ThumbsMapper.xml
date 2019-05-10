@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.ThumbsMapper">
+
+    <insert id="insertThumbs">
+         insert into thumbs_log (user_id, thumb_id, create_time) values (#{userId} , #{thumbId} ,now())
+    </insert>
+
+    <select id="checkThumbs" resultType="com.studentAdmin.domain.Thumbs">
+            select id id ,
+                   user_id userId,
+                   thumb_id thumbId,
+                   create_time createTime
+                   from thumbs_log
+                   where user_id = #{userId} and thumb_id = #{thumbId}
+    </select>
+    <select id="countThumbsByUserId" resultType="java.lang.Long">
+           select count(*)
+           from thumbs_log where user_id = #{userId}
+    </select>
+</mapper>

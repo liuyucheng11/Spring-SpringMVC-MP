@@ -15,6 +15,11 @@ public class CommonException extends Exception {
         super(msg);
         this.msg = msg;
     }
+    public CommonException(int code ,String msg){
+        super(msg);
+        this.code = code;
+        this.msg = msg;
+    }
 
     public String getMsg() {
         return msg;

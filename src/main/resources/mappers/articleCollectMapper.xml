@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.ArticleCollectMapper">
+    <delete id="deleteById">
+        delete from article_collect where collect_id = #{id}
+    </delete>
+
+    <select id="getUserCollect" resultType="com.studentAdmin.domain.VOs.ArticleCollectVO">
+        select
+        article.article_id articleId ,
+        article.article_name articleName,
+        article.article_type articleType,
+        article.publish_date articlePublish,
+        a.collect_date  collectDate,
+        a.collect_id collectId,
+        user.user_id userId,
+        user.user_name userName
+         from article
+         right join (select collect_id,article_id , collect_date , user_id from article_collect ) a
+         on a.article_id = article.article_id
+         left join user on article.user_id = user.user_id
+         where  a.user_id = #{userId}
+    </select>
+    <insert id="addArticleCollect">
+        insert into article_collect (user_id,article_id,collect_date)
+        values (#{userId},#{articleId},now())
+    </insert>
+
+    <select id="checkCollected" resultType="com.studentAdmin.domain.ArticleCollect">
+        select
+         collect_id collectId,
+         user_id    userId,
+         article_id articleId,
+       collect_date collectDate,
+        from article_collect
+        where article_id = #{articleId} and user_id = #{userId}
+    </select>
+
+
+
+</mapper>

@@ -28,6 +28,7 @@
     </insert>
     <select id="getOtherUser" resultType="com.studentAdmin.domain.VOs.UserVO">
 
+        select e.* , count(f.user_id) thumbsCount from (
         SELECT
         c.*,
         count( d.user_id ) articleCount
@@ -61,7 +62,8 @@
         ) c
         LEFT JOIN ( SELECT article.user_id FROM article ) d ON c.userId = d.user_id
         GROUP BY
-        c.userId
+        c.userId ) e left JOIN (select thumbs_log.user_id from thumbs_log ) f on f.user_id = e.userId
+        GROUP BY e.userId
         <if test="isOrder !=false ">
             order by followCount desc
         </if>

@@ -3,26 +3,31 @@ package com.studentAdmin.domain;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.studentAdmin.domain.VOs.UserVO;
 import lombok.Data;
 
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
+ * 聊天实体类
+ *
  * @author: liu.yucheng
- * @Date: 2019-4-23  16:11
+ * @Date: 2019-5-5  15:45
  * @version: 1.0
  */
-@TableName("user_friend")
+@TableName("chat_message")
 @Data
-public class UserFriend extends UserVO {
+public class ChatMessage {
+
     @TableId("id")
-    private Long id;
-    @TableField("user_id")
-    private Long friendId_2;
-    @TableField("friend_id")
-    private Long friendId;
+    private long id;
+    @TableField("sender_id")
+    private long senderId;
+    @TableField("receiver_Id")
+    private long receiverId;
+    @TableField("message")
+    private String message;
     @TableField("create_date")
     private Date createDate;
+
+
 }

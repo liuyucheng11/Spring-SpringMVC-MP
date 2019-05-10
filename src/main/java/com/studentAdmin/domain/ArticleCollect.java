@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @TableName("article_collect")
 public class ArticleCollect {
-  @TableField("uer_id")
+  @TableField("user_id")
   private long userId;
   @TableId("collect_id")
   private long collectId;

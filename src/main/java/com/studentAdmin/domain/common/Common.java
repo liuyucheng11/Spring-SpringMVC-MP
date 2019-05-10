@@ -57,6 +57,12 @@ public class Common {
     private static final  int code_15 = 15;
     private static final   String msg_15 = "不能关注自己哦 ~~";
 
+    private static  final  int code_16 = 16;
+    private static final  String msg_16 = "您已经给这位用户点过赞了~~";
+
+    private static final int code_17 = 17;
+    private static final String msg_17 = "你们已经是好友啦！";
+
     public static int getCode_7() {
         return code_7;
     }
@@ -174,5 +180,21 @@ public class Common {
 
     public static String getMsg_15() {
         return msg_15;
+    }
+
+    public static int getCode_16() {
+        return code_16;
+    }
+
+    public static String getMsg_16() {
+        return msg_16;
+    }
+
+    public static int getCode_17() {
+        return code_17;
+    }
+
+    public static String getMsg_17() {
+        return msg_17;
     }
 }

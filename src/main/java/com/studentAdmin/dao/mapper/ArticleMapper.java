@@ -39,6 +39,9 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
      List<ArticleVO> getArticlesByUserId(QueryParam param);
 
+     void deleteById(@Param("id") long id);
+
+
 
 
 

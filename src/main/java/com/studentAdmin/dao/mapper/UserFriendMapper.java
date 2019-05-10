@@ -1,9 +1,13 @@
 package com.studentAdmin.dao.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.common.QueryParam;
 import com.studentAdmin.domain.UserFriend;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: liu.yucheng
@@ -19,7 +23,7 @@ public interface UserFriendMapper extends BaseMapper<UserFriend> {
 
     void deleteFriendShip(Long userId ,Long friendId);
 
-    UserFriend qryUserFriend(@Param("userId")Long userId);
+    List<UserFriend> qryUserFriend(Map param);
 
 
 }

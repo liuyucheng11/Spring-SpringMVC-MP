@@ -17,6 +17,7 @@ public class UserVO {
     private Long followCount;
 
     private Long articleCount;
+    private long thumbsCount;
 
     public long getUserId() {
         return userId;
@@ -102,5 +103,13 @@ public class UserVO {
 
     public void setArticleCount(Long articleCount) {
         this.articleCount = articleCount;
+    }
+
+    public long getThumbsCount() {
+        return thumbsCount;
+    }
+
+    public void setThumbsCount(long thumbsCount) {
+        this.thumbsCount = thumbsCount;
     }
 }

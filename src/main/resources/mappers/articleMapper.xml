@@ -19,7 +19,7 @@
         #{articleType},
         #{articleDesc},
         #{publishDate}
-        )
+        )这
     </insert>
     <select id="searchArticle" parameterType="java.util.HashMap"
             resultType="com.studentAdmin.domain.Article">
@@ -240,4 +240,7 @@ GROUP BY
 
 
     </select>
+    <delete id="deleteById">
+        delete from article where article_id = #{id}
+    </delete>
 </mapper>
