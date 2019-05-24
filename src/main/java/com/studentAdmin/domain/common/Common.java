@@ -33,35 +33,40 @@ public class Common {
     private static final int code_8 = 8;
 
 
-
     private static final String msg_8 = "注册失败，服务器错误!";
 
     private static final int code_9 = 9;
     private static final String msg_9 = "获取文章信息失败";
 
-    private static final  int code_10 = 10;
-    private static final  String msg_10 = "当前未登录,请重新登录后执行此操作!";
+    private static final int code_10 = 10;
+    private static final String msg_10 = "当前未登录,请重新登录后执行此操作!";
 
-    private static  final  int code_11 = 11;
-    private static  final  String msg_11 = "您已发表过对此文章的评价";
+    private static final int code_11 = 11;
+    private static final String msg_11 = "您已发表过对此文章的评价";
 
-    private static final  int code_12 = 12;
-    private static final  String msg_12 = "上传头像图片格式有误!";
+    private static final int code_12 = 12;
+    private static final String msg_12 = "上传头像图片格式有误!";
 
     private static final int code_13 = 13;
-    private static final  String msg_13 = "您已收藏过此文章";
+    private static final String msg_13 = "您已收藏过此文章";
 
     private static final int code_14 = 14;
-    private static final  String msg_14 = "您已关注该用户!";
+    private static final String msg_14 = "您已关注该用户!";
 
-    private static final  int code_15 = 15;
-    private static final   String msg_15 = "不能关注自己哦 ~~";
+    private static final int code_15 = 15;
+    private static final String msg_15 = "不能关注自己哦 ~~";
 
-    private static  final  int code_16 = 16;
-    private static final  String msg_16 = "您已经给这位用户点过赞了~~";
+    private static final int code_16 = 16;
+    private static final String msg_16 = "您已经给这位用户点过赞了~~";
 
     private static final int code_17 = 17;
     private static final String msg_17 = "你们已经是好友啦！";
+
+    private static final int code_18 = 18;
+    private static final String msg_18 = "你已经点赞过该评论了!";
+
+    private static final int code_19  =  19;
+    private static final String msg_19 = "已记录阅读";
 
     public static int getCode_7() {
         return code_7;
@@ -118,6 +123,7 @@ public class Common {
     public static String getMsg_6() {
         return msg_6;
     }
+
     public static int getCode_8() {
         return code_8;
     }
@@ -196,5 +202,21 @@ public class Common {
 
     public static String getMsg_17() {
         return msg_17;
+    }
+
+    public static int getCode_18() {
+        return code_18;
+    }
+
+    public static String getMsg_18() {
+        return msg_18;
+    }
+
+    public static int getCode_19() {
+        return code_19;
+    }
+
+    public static String getMsg_19() {
+        return msg_19;
     }
 }

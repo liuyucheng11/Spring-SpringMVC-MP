@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.ArticleScoreMapper">
+    <delete id="deleteById">
+        delete from article_score
+         where evaluate_id = #{id}
+    </delete>
+
+    <select id="getScoreByUserId" resultType="com.studentAdmin.domain.VOs.ArticleScoreVO">
+        select
+            score.evaluate_id evaluateId,
+            score.user_id userId,
+            score.article_id articleId,
+            user.user_name userName,
+            score.comment comment,
+            score.create_date createDate,
+            score.score score,
+            count(b.score_id) thumbCount,
+            article.article_name articleTitle
+        from article_score score
+        left join user on user.user_id = score.user_id
+        left join article on score.article_id = article.article_id
+        left join ( select  score_id   from  thumb_comment ) b on b.score_id = score.evaluate_id
+        where score.user_id = #{userId}
+        group by  articleId
+
+    </select>
+
+    <select id="getByArticleIds" resultType="com.studentAdmin.domain.ArticleScore">
+        select
+             article_id articleId,
+             user_id userId
+        from article_score
+        where article_id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getClickLog" resultType="java.lang.Long">
+         select article_id articleId
+          from click_log
+          where  user_id = #{userId}
+    </select>
+</mapper>

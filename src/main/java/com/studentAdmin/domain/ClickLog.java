@@ -15,7 +15,7 @@ public class ClickLog {
   @TableField("article_id")
   private long articleId;
   @TableField("create_date")
-  private java.sql.Date createDate;
+  private java.util.Date createDate;
 
 
   public long getClickLogId() {
@@ -45,7 +45,7 @@ public class ClickLog {
   }
 
 
-  public java.sql.Date getCreateDate() {
+  public java.util.Date getCreateDate() {
     return createDate;
   }
 

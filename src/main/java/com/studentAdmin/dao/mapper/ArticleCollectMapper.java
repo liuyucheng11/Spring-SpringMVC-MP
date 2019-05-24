@@ -46,6 +46,13 @@ public interface ArticleCollectMapper extends BaseMapper<ArticleCollect> {
      */
      ArticleCollect checkCollected(@Param("userId") long userId,@Param("articleId") long articleId);
 
+    /**
+     * 根据id获取收藏记录
+     * @param articleIds
+     * @return
+     */
+     List<ArticleCollect> getByArticleIds(List<Long> articleIds);
+
 
 
 }

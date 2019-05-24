@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.FriendRecommendMapper">
+
+    <insert id="insertRecommend">
+
+        insert into friend_recommend (user_id, article_id, create_date,recommend_id) values
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.friendId},#{item.articleId},now(),#{item.userId})
+        </foreach>
+    </insert>
+    <select id="checkRecommend" resultType="com.studentAdmin.domain.FriendRecommend">
+        select
+               id  id,
+               user_id userId,
+               article_id articleId,
+               create_date createDate,
+               recommend_id recommendId
+                from friend_recommend
+                where user_id = #{userId}
+                and recommend_id = #{recommendId}
+    </select>
+
+    <select id="getFriendRecommends" resultType="com.studentAdmin.domain.VOs.FriendRecommendVO">
+             select re.id id ,
+                    re.user_id friendId,
+                    re.recommend_id userId,
+                    re.create_date createDate,
+                    re_p.user_name friendName,
+                    article.article_id articleId,
+                    article.article_name articleName,
+                    article.user_id authorId,
+				    author.user_name authorName
+             from friend_recommend re
+             left join user on re.recommend_id = user.user_id
+             left join user re_p on re_p.user_id = re.user_id
+             left join article on article.article_id = re.article_id
+             	left join user author on article.user_id = author.user_id
+             where re.recommend_id = #{userId}
+             and DATE_SUB( CURDATE(), INTERVAL 5 DAY ) &lt;= date( re.create_date )
+
+    </select>
+</mapper>

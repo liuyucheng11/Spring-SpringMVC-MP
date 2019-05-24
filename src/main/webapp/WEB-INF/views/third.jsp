@@ -6,15 +6,15 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="mytag" uri="/WEB-INF/tags/mytag.tld" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-     <%
-         out.print("这是第三个页面");
-     %>
-     <mytag:hello name="自定义标签" ></mytag:hello>
+
 </body>
+<script>
+    this.webSocket = new WebSocket('ws://localhost:8084/article-blog/websocket/socketServer');
+
+</script>
 </html>

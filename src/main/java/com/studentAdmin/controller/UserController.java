@@ -9,14 +9,17 @@ import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.Dto.LoginDto;
 import com.studentAdmin.domain.User;
 import com.studentAdmin.domain.UserAvatar;
+import com.studentAdmin.domain.VOs.ArticleScoreVO;
 import com.studentAdmin.domain.common.Common;
 import com.studentAdmin.domain.common.CommonException;
 import com.studentAdmin.service.*;
+import com.studentAdmin.service.impl.ClickLogServiceImpl;
 import com.studentAdmin.util.SessionUtil;
 import com.studentAdmin.util.UrlGenerationUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +58,15 @@ public class UserController {
     MessageService messageService;
     @Autowired
     ThumbsService thumbsService;
+    @Autowired
+    ThumbScoreService thumbScoreService;
+    @Autowired
+    ArticleScoreService articleScoreService;
+
+    @Autowired
+    CLickLogService cLickLogService;
+
+
     @Deprecated
     @RequestMapping("/login.do")
     public Object userLogin(LoginDto loginDto) {
@@ -476,7 +488,7 @@ public class UserController {
     public Result getReceiveMessage(@RequestParam("page") int page, @RequestParam("limit") int limit,
                                     @RequestParam("onlyShowIgnore") boolean onlyShowIgnore,
                                     @RequestParam("showNoRead") boolean showNoRead,
-                                    @RequestParam("showNoReply") boolean showNoReply ){
+                                    @RequestParam("showNoReply") boolean showNoReply) {
         User user = (User) SessionUtil.getSessionAttribute("user");
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
@@ -484,7 +496,7 @@ public class UserController {
         map.put("receiveId", user.getUserId());
         map.put("onlyShowIgnore", onlyShowIgnore);
         map.put("showNoRead", showNoRead);
-        map.put("showNoReply",showNoReply);
+        map.put("showNoReply", showNoReply);
         QueryParam param = new QueryParam(map);
         ResultPage resultPage = messageService.getMessageByReceiveId(param);
         return Result.ok().put("page", resultPage);
@@ -492,19 +504,20 @@ public class UserController {
 
     /**
      * 查询已发送私信
+     *
      * @param page
      * @param limit
      * @return
      */
     @RequestMapping("getSendMessage.do")
     @ResponseBody
-    public Result getSendMessage(@RequestParam("page") int page, @RequestParam("limit") int limit,@RequestParam("onlyShowHasReply") boolean onlyShowHasReply) {
+    public Result getSendMessage(@RequestParam("page") int page, @RequestParam("limit") int limit, @RequestParam("onlyShowHasReply") boolean onlyShowHasReply) {
         User user = (User) SessionUtil.getSessionAttribute("user");
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("limit", limit);
-        map.put("sendId",user.getUserId());
-        map.put("onlyShowHasReply",onlyShowHasReply);
+        map.put("sendId", user.getUserId());
+        map.put("onlyShowHasReply", onlyShowHasReply);
         QueryParam param = new QueryParam(map);
         ResultPage resultPage = messageService.getMessageBySendId(param);
         return Result.ok().put("page", resultPage);
@@ -512,73 +525,169 @@ public class UserController {
 
     /**
      * 设置私信已读状态
+     *
      * @param id
      * @return
      */
     @RequestMapping("setMessageRead.do")
     @ResponseBody
-    public Result setMessageRead(@RequestParam("id") long id){
-        try{
+    public Result setMessageRead(@RequestParam("id") long id) {
+        try {
             messageService.readMessageById(id);
             return Result.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             return Result.error();
         }
     }
 
     /**
      * 发送者删除
+     *
      * @param id
      * @return
      */
-     @RequestMapping("senderDelete.do")
-     @ResponseBody
-    public Result senderDelete(@RequestParam("id") long id ){
-          try{
-              messageService.senderDeleteById(id);
-              return  Result.ok();
-          }catch (Exception e){
-              return  Result.error();
-          }
-     }
+    @RequestMapping("senderDelete.do")
+    @ResponseBody
+    public Result senderDelete(@RequestParam("id") long id) {
+        try {
+            messageService.senderDeleteById(id);
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.error();
+        }
+    }
+
     /**
      * 接收着删除
+     *
      * @param id
      * @return
      */
-     @RequestMapping("receiverDelete.do")
+    @RequestMapping("receiverDelete.do")
     @ResponseBody
-    public Result receiverDelete(@RequestParam("id") long id)
-     {
-         try{
-             messageService.receiveDeleteById(id);
-             return  Result.ok();
-         }catch (Exception e){
-             return  Result.error();
-         }
-     }
-     @RequestMapping("ignoreMessage.do")
-     @ResponseBody
-    public Result ignoreMessage(@RequestParam("id") long id){
-         try{
-             messageService.ignoreMessageById(id);
-             return  Result.ok();
-         }catch (Exception e){
-             return  Result.error();
-         }
-     }
+    public Result receiverDelete(@RequestParam("id") long id) {
+        try {
+            messageService.receiveDeleteById(id);
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.error();
+        }
+    }
+
+    @RequestMapping("ignoreMessage.do")
+    @ResponseBody
+    public Result ignoreMessage(@RequestParam("id") long id) {
+        try {
+            messageService.ignoreMessageById(id);
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.error();
+        }
+    }
 
     /**
      * 点赞
+     *
      * @param userId
      * @return
      */
-     @RequestMapping("thumb.do")
-     @ResponseBody
-    public Result thumb(@RequestParam("userId") long userId){
-         User user = (User) SessionUtil.getSessionAttribute("user");
-         return  thumbsService.insertThumbs(userId,user.getUserId());
-     }
+    @RequestMapping("thumb.do")
+    @ResponseBody
+    public Result thumb(@RequestParam("userId") long userId) {
+        User user = (User) SessionUtil.getSessionAttribute("user");
+        return thumbsService.insertThumbs(userId, user.getUserId());
+    }
+
+    /**
+     * 点赞评论
+     *
+     * @param scoreId
+     * @return
+     */
+    @RequestMapping("thumbComment.do")
+    @ResponseBody
+    public Result thumbComment(@RequestParam("scoreId") long scoreId) {
+        User user = (User) SessionUtil.getSessionAttribute("user");
+        try{
+            thumbScoreService.insertThumbScore(scoreId,user.getUserId());
+        }catch (CommonException e){
+             return Result.error(e.getCode(),e.getMsg());
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 取消点赞
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteThumbComment.do")
+    @ResponseBody
+    public Result deleteThumbComment(@RequestParam("id") long id){
+
+         try{
+             thumbScoreService.deleteThumb(id);
+             return Result.ok();
+         }catch (Exception e){
+              return  Result.error();
+         }
+    }
+
+    /**
+     * 删评
+     * @param evaluateId
+     * @return
+     */
+    @RequestMapping("deleteComment.do")
+    @ResponseBody
+    public Result deleteComment(@RequestParam("evaluateId") long evaluateId){
+             try{
+                 articleScoreService.deleteScoreById(evaluateId);
+                 return Result.ok();
+             }catch (Exception e){
+                 return Result.error();
+             }
+    }
+
+    /**
+     * 获取用户评论列表
+     * @return
+     */
+    @RequestMapping("getUserComment.do")
+    @ResponseBody
+    public Result getUserComment(){
+        User user = (User) SessionUtil.getSessionAttribute("user");
+        List<ArticleScoreVO> articleScoreVOS = articleScoreService.getArticleScoreByUserId(user.getUserId());
+        return Result.ok().put("list",articleScoreVOS);
+    }
+
+    /**
+     * 用户点击文章时记录访问
+     * @param articleId
+     * @return
+     */
+    @RequestMapping("recordClickLog.do")
+    @ResponseBody
+    public Result recordClickLog(@RequestParam("articleId") long articleId){
+        User user = (User) SessionUtil.getSessionAttribute("user");
+        try{
+            cLickLogService.insertLogService(user.getUserId(),articleId);
+            return  Result.ok();
+        }catch (CommonException e){
+               return Result.error(e.getCode(),e.getMsg());
+        }
+    }
+
+    /**
+     * 登出
+     * @return
+     */
+    @RequestMapping("logout.do")
+    @ResponseBody
+    public Result logout(){
+        SessionUtil.setSessionAttribute("user",null);
+        return Result.ok();
+    }
 
 
 }

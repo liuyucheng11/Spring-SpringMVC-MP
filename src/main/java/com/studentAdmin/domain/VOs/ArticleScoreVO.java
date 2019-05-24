@@ -11,4 +11,7 @@ import lombok.Data;
 @Data
 public class ArticleScoreVO extends ArticleScore {
     private String userName;
+    private String articleTitle;
+    private long thumbCount;
+
 }

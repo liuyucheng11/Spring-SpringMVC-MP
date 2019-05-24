@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.studentAdmin.dao.mapper.ClickLogMapper">
+
+    <insert id="insertClickLog">
+        insert into click_log (user_id, article_id, create_date) values
+        (#{userId},#{articleId},now())
+    </insert>
+    <select id="checkHasRead" resultType="com.studentAdmin.domain.ClickLog">
+             select
+                    click_log_id clickLogId,
+                    user_id userId,
+                    article_id articleId
+                from click_log
+                where article_id = #{articleId}
+                and user_id = #{userId}
+    </select>
+</mapper>

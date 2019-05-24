@@ -36,6 +36,17 @@
         where article_id = #{articleId} and user_id = #{userId}
     </select>
 
+    <select id="getByArticleIds" resultType="com.studentAdmin.domain.ArticleCollect">
+        select
+        user_id userId,
+        article_id articleId
+        from article_collect
+        where article_id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+
+    </select>
 
 
 </mapper>

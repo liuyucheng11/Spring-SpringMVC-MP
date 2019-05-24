@@ -15,7 +15,7 @@ public class ArticleScore {
  @TableField("article_id")
   private Long articleId;
  @TableField("score")
-  private long score;
+  private int score;
  @TableField("comment")
   private String comment;
  @TableField("create_date")
@@ -51,11 +51,11 @@ public class ArticleScore {
   }
 
 
-  public long getScore() {
+  public int getScore() {
     return score;
   }
 
-  public void setScore(long score) {
+  public void setScore(int score) {
     this.score = score;
   }
 

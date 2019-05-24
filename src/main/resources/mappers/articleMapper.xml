@@ -51,18 +51,21 @@
         where article.article_id = #{articleId}
     </select>
     <select id="qryArticleComments" parameterType="Long" resultType="com.studentAdmin.domain.VOs.ArticleScoreVO">
-            SELECT  article_score.evaluate_id as evaluateId,
+          SELECT  article_score.evaluate_id as evaluateId,
                     article_score.user_id as userId,
                     article_score.article_id articleId,
                     article_score.score as score,
                     article_score.create_date as createDate,
                     article_score.like_number as likeNumber,
                     article_score.comment as comment,
-                    user.user_name as userName
-                    from article_score
+                    user.user_name as userName,
+					IFNULL(b.count,0) thumbCount
+                     from article_score
+
                     left join user on user.user_id = article_score.user_id
+                    left join (select count(*) count , score_id from thumb_comment group by score_id ) b on b.score_id = article_score.evaluate_id
                     where
-                        article_score.article_id = #{articleId}
+                    article_score.article_id = #{articleId}
     </select>
 
     <!--<select id="qryArticle" parameterType="java.util.Map"
@@ -243,4 +246,61 @@ GROUP BY
     <delete id="deleteById">
         delete from article where article_id = #{id}
     </delete>
+
+    <select id="getArticleByArticleIDs" resultType="com.studentAdmin.domain.VOs.ArticleVO">
+        SELECT
+        article.article_id articleId,
+        article.article_name articleName,
+        article.article_type articleType,
+        article.article_desc articleDesc,
+        article.publish_date publishDate,
+        article.homeUrl homeUrl,
+        USER.user_name userName,
+        USER.user_id userId,
+        ifNULL( a.scoreCount, 0 ) scoreCount,
+        ifNULL( a.avgScore, 0 ) avgScore,
+        ifNULL( b.collectCount, 0 ) collectCount
+        FROM
+        article
+        LEFT JOIN USER ON USER.user_id = article.user_id
+        LEFT JOIN (
+        SELECT
+        count( * ) scoreCount,
+        article_id AS articleId,
+        sum( article_score.score ) / count( article_score.article_id ) avgScore
+        FROM
+        article_score
+        GROUP BY
+        article_id
+        ) a ON a.articleId = article.article_Id
+        LEFT JOIN ( SELECT count( article_id ) collectCount, article_id FROM article_collect GROUP BY article_id ) b ON
+        b.article_id = article.article_id
+        WHERE article.article_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY
+        articleId
+    </select>
+    <select id="getHotArticle" resultType="com.studentAdmin.domain.VOs.HotArticleVO">
+SELECT
+	d.*,
+	( @rowNum := @rowNum + 1 ) AS rank
+FROM
+	( SELECT ( @rowNum := 0 ) ) b,
+	(
+SELECT
+	c.*,
+	article.article_name articleName,
+	article.article_id articleId,
+	USER.user_id userId,
+	USER.user_name userName
+FROM
+	( SELECT count( * ) recentClick, article_id FROM click_log click GROUP BY article_id ORDER BY recentClick DESC ) c
+	LEFT JOIN article ON c.article_id = article.article_id
+	LEFT JOIN USER ON USER.user_id = article.user_id
+	) d
+
+    </select>
+
 </mapper>

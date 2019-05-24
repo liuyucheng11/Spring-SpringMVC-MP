@@ -17,7 +17,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 
 @Configuration
-@EnableWebMvc//这个标注可以不加，如果有加，要extends WebMvcConfigurerAdapter
+@EnableWebMvc
 @EnableWebSocket
 public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 

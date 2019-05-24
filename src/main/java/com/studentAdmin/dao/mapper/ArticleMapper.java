@@ -7,6 +7,7 @@ import com.studentAdmin.domain.ArticleScore;
 import com.studentAdmin.domain.Dto.ScoreDto;
 import com.studentAdmin.domain.VOs.ArticleScoreVO;
 import com.studentAdmin.domain.VOs.ArticleVO;
+import com.studentAdmin.domain.VOs.HotArticleVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -40,6 +41,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
      List<ArticleVO> getArticlesByUserId(QueryParam param);
 
      void deleteById(@Param("id") long id);
+
+     List<ArticleVO> getArticleByArticleIDs(List<Long> list);
+
+     List<HotArticleVO> getHotArticle();
+
+
 
 
 
