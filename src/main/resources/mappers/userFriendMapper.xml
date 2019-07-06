@@ -20,10 +20,7 @@
     <delete id="deleteFriendShip">
 
           delete from user_friend
-           where
-                ( user_id = #{userId} and friend_id = #{friendId})
-                or
-                ( user_id = #{friend}  and friend_id = #{userId})
+         where id = #{id}
     </delete>
 
     <select id="qryUserFriend" resultType="com.studentAdmin.domain.UserFriend">
@@ -34,17 +31,19 @@
         USER.sex sex,
         USER.user_occupation occupation,
         a.createDate createDate,
+        a.id,
         USER.user_age userAge
         FROM
         USER RIGHT JOIN (
         SELECT
         friend_id friendId,
-        create_date createDate
+        create_date createDate,
+        id id
         FROM
         `user_friend`
         WHERE
         user_id = #{userId} UNION
-        ( SELECT user_id friendId, create_date createDate FROM `user_friend` WHERE friend_id = #{userId} )
+        ( SELECT user_id friendId, create_date createDate,id id FROM `user_friend` WHERE friend_id = #{userId} )
         ) a ON a.friendId = USER.user_id ) b
         <where>
             <if test="friendName!=null and friendName !=''">

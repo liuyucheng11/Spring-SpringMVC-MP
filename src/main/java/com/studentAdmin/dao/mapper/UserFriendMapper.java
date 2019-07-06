@@ -21,7 +21,7 @@ public interface UserFriendMapper extends BaseMapper<UserFriend> {
 
     void beFriendShip(@Param("userId") Long userId,@Param("friendId") Long friendId);
 
-    void deleteFriendShip(Long userId ,Long friendId);
+    void deleteFriendShip(@Param("id") Long id);
 
     List<UserFriend> qryUserFriend(Map param);
 

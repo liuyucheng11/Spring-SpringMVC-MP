@@ -16,7 +16,7 @@ public interface UserFriendService {
 
     void beFriendShip(Long id , Long userId, Long friendId) throws CommonException;
 
-    void deleteFriendShip(Long userId, Long friendId);
+    void deleteFriendShip(Long id);
 
     List<UserFriend> qryUserFriend(Map param);
 

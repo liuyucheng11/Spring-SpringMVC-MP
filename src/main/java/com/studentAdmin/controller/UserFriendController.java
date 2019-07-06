@@ -38,15 +38,15 @@ public class UserFriendController {
     /**
      * 删除好友
      *
-     * @param friendId
+     * @param id
      * @return
      */
     @RequestMapping("user/deleteFriend.do")
     @ResponseBody
-    public Result deleteFriend(@RequestParam("friendId") long friendId) {
+    public Result deleteFriend(@RequestParam("id") long id) {
         User user = (User) SessionUtil.getSessionAttribute("user");
         try {
-            userFriendService.deleteFriendShip(user.getUserId(), friendId);
+            userFriendService.deleteFriendShip(id);
             return Result.ok();
         } catch (Exception e) {
             return Result.error();

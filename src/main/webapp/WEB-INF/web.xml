@@ -17,7 +17,7 @@
                      </param-value>
     </context-param>
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener </listener-class>
+        <listener-class>com.common.listener.ContextLoadListenerExtend</listener-class>
     </listener>
     <filter>
         <filter-name>encodingFilter</filter-name>

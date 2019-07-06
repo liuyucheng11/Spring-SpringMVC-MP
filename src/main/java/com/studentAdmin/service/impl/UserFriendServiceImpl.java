@@ -42,8 +42,8 @@ public class UserFriendServiceImpl implements UserFriendService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteFriendShip(Long userId, Long friendId) {
-        userFriendMapper.deleteFriendShip(userId, friendId);
+    public void deleteFriendShip(Long id) {
+        userFriendMapper.deleteFriendShip(id);
     }
 
     @Override

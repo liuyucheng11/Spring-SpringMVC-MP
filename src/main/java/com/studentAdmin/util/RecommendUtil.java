@@ -214,7 +214,7 @@ public class RecommendUtil {
         List<AnalyseDto> analyseDtoList = getUserAnalyseDto(userId);
         Map<Long, Integer> loginPM = new HashMap<>();
         //获取其他用户评分
-        Map<Long, Double> personMap = new HashMap<>();
+        Map<Long, Double> personMap = new LinkedHashMap<>();
         Map<Long, List<AnalyseDto>> otherAnalyseMap = getOtherAnalyseDtos(analyseDtoList);
         //删除登录用户避免识别为自己
         for (Long id : otherAnalyseMap.keySet()) {
