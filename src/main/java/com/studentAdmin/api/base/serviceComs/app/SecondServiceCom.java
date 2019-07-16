@@ -12,6 +12,6 @@ import com.studentAdmin.api.base.serviceComs.AbstractServiceCom;
 public class SecondServiceCom extends AbstractServiceCom {
     @Override
     public Object invoke() {
-        return null;
+        return "SecondServiceInvoke!";
     }
 }

@@ -1,5 +1,6 @@
 package com.studentAdmin.api.base.adapters.app;
 
+import com.container.RequestContext;
 import com.studentAdmin.api.apiAnnotation.AdapterDesc;
 import com.studentAdmin.api.base.adapters.AbstractAdapter;
 
@@ -12,6 +13,6 @@ import com.studentAdmin.api.base.adapters.AbstractAdapter;
 public class SecondApiAdapter extends AbstractAdapter {
     @Override
     public Object invoke() {
-        return null;
+        return RequestContext.getDTO();
     }
 }

@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
 public class FirstServiceCom extends AbstractServiceCom {
     @Override
     public Object invoke() {
-        return null;
+        return "FirstServiceInvoke!";
     }
 }

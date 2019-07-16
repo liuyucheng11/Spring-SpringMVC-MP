@@ -34,4 +34,21 @@ public class ContainerManager {
         }
     }
 
+    public static AdapterContainer getAdapterContainer() {
+        if (adapterContainer == null) {
+            initAdapterContainer();
+        }
+        return adapterContainer;
+    }
+
+    public static ServiceComContainer getServiceComContainer() {
+        if (serviceComContainer == null) {
+            initServiceComContainer();
+        }
+        return serviceComContainer;
+    }
+
+    public static void init() {
+        adapterContainer.prepend(serviceComContainer);
+    }
 }
